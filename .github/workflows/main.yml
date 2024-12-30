@@ -2,7 +2,7 @@ name: Check and Schedule Blog Posting
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 13 * * *"
   workflow_dispatch:
 
 jobs:
