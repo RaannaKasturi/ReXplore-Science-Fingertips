@@ -1,4 +1,4 @@
-# ReXplore: Science @ Fingertips
+# ReXplore: Science Simplified, Knowledge Amplified
 
 ReXplore makes the latest scientific research accessible to all.
 With clear summaries, detailed insights, and interactive mind maps, it brings you the world’s newest discoveries without the need for extensive reading.
