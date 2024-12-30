@@ -1,4 +1,4 @@
-# ReXplore: Science Simplified, Knowledge Amplified
+# ReXplore: Science Simplified, Knowledge Amplified [![Check and Schedule Blog Posting](https://github.com/RaannaKasturi/ReXplore-Backend/actions/workflows/main.yml/badge.svg)](https://github.com/RaannaKasturi/ReXplore-Backend/actions/workflows/main.yml)
 
 ReXplore makes the latest scientific research accessible to all.
 With clear summaries, detailed insights, and interactive mind maps, it brings you the world’s newest discoveries without the need for extensive reading.
