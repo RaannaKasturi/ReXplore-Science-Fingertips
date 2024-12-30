@@ -1,0 +1,15 @@
+sumy==0.11.0
+nltk==3.9.1
+openai==1.57.3
+python-dotenv==1.0.1
+pdfplumber==0.11.4
+PyPDF2==3.0.1
+beautifulsoup4==4.12.3
+requests==2.32.3
+huggingface-hub==0.27.0
+gradio==5.9.1
+mistune==3.0.2
+nbconvert==7.16.4
+pillow==11.0.0
+pollinations==2.1
+sib-api-v3-sdk==7.6.0
