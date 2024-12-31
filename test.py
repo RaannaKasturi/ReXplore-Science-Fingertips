@@ -40,7 +40,7 @@ def main():
     print(f"test() returned: {test_result}")
     if not test_result:
         raise RuntimeError("API test function failed or returned an invalid response.")
-    post_blogs_result = execute_with_timeout(post_blogs, timeout=60)
+    post_blogs_result = execute_with_timeout(post_blogs, timeout=20)
     if post_blogs_result is None:
         print("post_blogs() timed out or failed to execute.")
     else:
