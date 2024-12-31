@@ -16,10 +16,12 @@ def test():
 
 def post_blogs():
     client = Client("raannakasturi/ReXploreBackend")
+    print("Starting to Posting blogs...")
     result = client.predict(
             uaccess_key=access_key,
             api_name="/rexplore_backend"
     )
+    print(f"Blog Posting Started")
 
 def fire_and_forget(func):
     thread = threading.Thread(target=func, daemon=True)  # Set daemon=True
