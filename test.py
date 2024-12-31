@@ -4,12 +4,12 @@ from gradio_client import Client
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
 dotenv.load_dotenv()
-uaccess_key = os.getenv("ACCESS_KEY")
+access_key = os.getenv("ACCESS_KEY")
 
 def test():
     client = Client("raannakasturi/ReXploreBackend")
     result = client.predict(
-        access_key=uaccess_key,
+        uaccess_key=access_key,
         api_name="/rexplore_backend_test"
     )
     return result
@@ -17,7 +17,7 @@ def test():
 def post_blogs():
     client = Client("raannakasturi/ReXploreBackend")
     result = client.predict(
-        access_key=uaccess_key,
+        uaccess_key=access_key,
         api_name="/rexplore_backend"
     )
     return result
@@ -34,7 +34,7 @@ def execute_with_timeout(func, timeout):
             return None
 
 def main():
-    if not uaccess_key:
+    if not access_key:
         raise ValueError("ACCESS_KEY is not set in the environment variables.")
     test_result = test()
     print(f"test() returned: {test_result}")
