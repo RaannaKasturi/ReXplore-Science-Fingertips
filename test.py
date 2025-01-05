@@ -1,45 +1,51 @@
-import threading
 import os
 import dotenv
-from gradio_client import Client
+import requests
 
 dotenv.load_dotenv()
 access_key = os.getenv("ACCESS_KEY")
 
-def test():
-    client = Client("raannakasturi/ReXploreBackend")
-    result = client.predict(
-            uaccess_key=access_key,
-            api_name="/rexplore_backend_test"
-    )
-    return result
-
-def post_blogs():
-    client = Client("raannakasturi/ReXploreBackend")
-    print("Starting to Posting blogs...")
-    result = client.predict(
-            uaccess_key=access_key,
-            api_name="/rexplore_backend"
-    )
-    print(f"Blog Posting Started")
-
-def fire_and_forget(func):
-    thread = threading.Thread(target=func, daemon=True)  # Set daemon=True
-    thread.start()
+API_ENDPOINT = "https://raannakasturi-rexplorebackend.hf.space/gradio_api/call/rexplore_backend"
+def make_request(data: list[str], proxy: str = None) -> None:
+    payload = {"data": data}
+    proxies = {"http": proxy, "https": proxy} if proxy else None
+    try:
+        with requests.Session() as session:
+            response = session.post(API_ENDPOINT, json=payload, proxies=proxies)
+            if response.status_code != 200:
+                raise Exception(f"POST request failed with status {response.status_code}: {response.text}")
+            response_data = response.json()
+            event_id = response_data.get("event_id")
+            if not event_id:
+                raise Exception("EVENT_ID not found in the response.")
+            status_url = f"{API_ENDPOINT}/{event_id}"
+            with session.get(status_url, stream=True, timeout=10, proxies=proxies) as stream_response:
+                if stream_response.status_code != 200:
+                    raise Exception(f"Streaming GET request failed with status {stream_response.status_code}: {stream_response.text}")
+                for line in stream_response.iter_lines(decode_unicode=True, delimiter="\n\n"):
+                    if line.startswith("event:"):
+                        event_parts = line.split("\ndata: ")
+                        if len(event_parts) < 2:
+                            continue
+                        event_type = event_parts[0].split(": ")[1].strip()
+                        data = event_parts[1].strip()
+                        if event_type == "error":
+                            raise Exception(f"Error occurred: {data}")
+                        elif event_type == "complete":
+                            print(f"Received: {data}")
+                            return
+    except requests.Timeout:
+        print("Request timed out.")
+        return True
+    except requests.RequestException as e:
+        print(f"Request error: {e}")
+        return True
+    except Exception as e:
+        raise str(e)
 
 def main():
-    if not access_key:
-        raise ValueError("ACCESS_KEY is not set in the environment variables.")
-    test_result = test()
-    print(f"test() returned: {test_result}")
-    if not test_result:
-        raise RuntimeError("API test function failed or returned an invalid response.")
-    else:
-        print("API test function passed.")
-        fire_and_forget(post_blogs)
-        print("Post blogs triggered and not waiting for response.")
-    return test_result
+    data = [access_key]
+    print(make_request(data))
 
 if __name__ == "__main__":
-    main_result = main()
-    print(f"Final result: {main_result}")
+    main()
