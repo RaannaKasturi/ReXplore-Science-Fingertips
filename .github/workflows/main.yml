@@ -1,6 +1,8 @@
 name: Check and Schedule Blog Posting
 
 on:
+  schedule:
+    - cron: "30 18 * * *"
   workflow_dispatch:
 
 jobs:
